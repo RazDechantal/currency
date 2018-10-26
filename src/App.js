@@ -1,28 +1,71 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
+import List from "./component/List";
+import Login from "./Auth/Login";
+
+import { Container, Row, Col } from "reactstrap";
+
+// Firebase
+import firebase from "./Config/FireConfig";
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.logout = this.logout.bind(this);
+    this.user = {
+      email: "XXX",
+      password: "YYY"
+    };
+    this.state = {
+      user: this.user
+    };
+  }
+
+  logout() {
+    firebase.auth().signOut();
+  }
+
+  componentDidMount() {
+    this.authListener();
+  }
+
+  authListener() {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.setState({ user });
+      } else {
+        this.setState({ user: null });
+      }
+    });
+  }
+
+  login(user) {
+    console.log("In Parent user:" + user);
+    this.setState({ [this.state]: user });
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div>
+        <Container>
+          <Row>
+            <Col xs="12">
+              <div>
+                {this.state.user ? (
+                  <div>
+                    {" "}
+                    <List />{" "}
+                  </div>
+                ) : (
+                  <Login />
+                )}
+              </div>
+            </Col>
+            <Col xs="6" />
+          </Row>
+          <input type="submit" value="Sign out" onClick={this.logout} />
+        </Container>
       </div>
     );
   }
 }
-
 export default App;
