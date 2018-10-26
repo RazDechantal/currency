@@ -2,7 +2,7 @@
   "name": "hello",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://RazDechantal.github.io/hello",
+  "homepage": "https://RazDechantal.github.io/currency",
   "dependencies": {
     "ajv": "^6.5.4",
     "bootstrap": "^4.0.0-beta.3",
